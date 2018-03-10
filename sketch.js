@@ -30,6 +30,7 @@
 var carrier; // this is the oscillator we will hear
 var modulator; // this oscillator will modulate the amplitude of the carrier
 var fft; // we'll visualize the waveform
+var carrFreq;
 
 function setup() {
   createCanvas(800,400);
@@ -38,13 +39,14 @@ function setup() {
 
 
   carrier = new p5.Oscillator(); // connects to master output by default
-  carrier.freq(340);
+  carrFreq = random(50, 800);
+
   carrier.amp(0);
   // carrier's amp is 0 by default, giving our modulator total control
 
   carrier.start();
 
-  modulator = new p5.Oscillator('triangle');
+  modulator = new p5.Oscillator(0);
   modulator.disconnect();  // disconnect the modulator from master output
   modulator.freq(5);
   modulator.amp(1);
@@ -67,7 +69,8 @@ function draw() {
 
   var modAmp = map(mouseX, 0, width, 0, 1);
   modulator.amp(modAmp, 0.01); // fade time of 0.1 for smooth fading
-
+  carrFreq = random(200, 800);
+    carrier.freq(carrFreq);
   // analyze the waveform
   waveform = fft.waveform();
 
